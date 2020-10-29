@@ -108,6 +108,8 @@ describe("Admin API: #" .. strategy, function()
         assert.equal(1, #json.data)
         assert.is_string(json.data[1].cert)
         assert.is_string(json.data[1].key)
+        assert.equal(cjson.null, json.data[1].cert_alt)
+        assert.equal(cjson.null, json.data[1].key_alt)
         assert.same(my_snis, json.data[1].snis)
       end)
     end)
@@ -209,6 +211,8 @@ describe("Admin API: #" .. strategy, function()
           local json = cjson.decode(body)
           assert.is_string(json.cert)
           assert.is_string(json.key)
+          assert.equal(cjson.null, json.cert_alt)
+          assert.equal(cjson.null, json.key_alt)
           assert.same({ n1, n2 }, json.snis)
         end
       end)
@@ -237,6 +241,8 @@ describe("Admin API: #" .. strategy, function()
           local json = cjson.decode(body)
           assert.is_string(json.cert)
           assert.is_string(json.key)
+          assert.equal(cjson.null, json.cert_alt)
+          assert.equal(cjson.null, json.key_alt)
           assert.matches('"snis":[]', body, nil, true)
         end
       end)
@@ -254,6 +260,8 @@ describe("Admin API: #" .. strategy, function()
 
         assert.is_string(json1.cert)
         assert.is_string(json1.key)
+        assert.equal(cjson.null, json1.cert_alt)
+        assert.equal(cjson.null, json1.key_alt)
         assert.same(names, json1.snis)
       end)
 
@@ -269,6 +277,8 @@ describe("Admin API: #" .. strategy, function()
 
         assert.is_string(json1.cert)
         assert.is_string(json1.key)
+        assert.equal(cjson.null, json1.cert_alt)
+        assert.equal(cjson.null, json1.key_alt)
         assert.same(names, json1.snis)
         assert.same(json1, json2)
       end)
@@ -299,6 +309,8 @@ describe("Admin API: #" .. strategy, function()
         local body = assert.res_status(200, res)
         local json = cjson.decode(body)
         assert.same(ssl_fixtures.cert, json.cert)
+        assert.equal(cjson.null, json.cert_alt)
+        assert.equal(cjson.null, json.key_alt)
 
         assert.same({ n1 }, json.snis)
         json.snis = nil
@@ -322,6 +334,8 @@ describe("Admin API: #" .. strategy, function()
         local body = assert.res_status(200, res)
         local json = cjson.decode(body)
         assert.same(ssl_fixtures.cert, json.cert)
+        assert.equal(cjson.null, json.cert_alt)
+        assert.equal(cjson.null, json.key_alt)
 
         assert.same({ n1, n2 }, json.snis)
         json.snis = nil
@@ -345,6 +359,8 @@ describe("Admin API: #" .. strategy, function()
         local body = assert.res_status(200, res)
         local json = cjson.decode(body)
         assert.same(ssl_fixtures.cert, json.cert)
+        assert.equal(cjson.null, json.cert_alt)
+        assert.equal(cjson.null, json.key_alt)
 
         assert.same({ n1, n2 }, json.snis)
         json.snis = nil
@@ -365,6 +381,8 @@ describe("Admin API: #" .. strategy, function()
         local json = cjson.decode(body)
         assert.same(ssl_fixtures.cert_alt, json.cert)
         assert.same(ssl_fixtures.key_alt, json.key)
+        assert.equal(cjson.null, json.cert_alt)
+        assert.equal(cjson.null, json.key_alt)
         assert.same({}, json.snis)
 
         json.snis = nil
@@ -439,6 +457,8 @@ describe("Admin API: #" .. strategy, function()
           local json = cjson.decode(body)
 
           assert.equal(ssl_fixtures.cert_alt, json.cert)
+          assert.equal(cjson.null, json.cert_alt)
+          assert.equal(cjson.null, json.key_alt)
         end
       end)
 
@@ -484,6 +504,8 @@ describe("Admin API: #" .. strategy, function()
           local json = cjson.decode(body)
 
           assert.equal(ssl_fixtures.cert_alt, json.cert)
+          assert.equal(cjson.null, json.cert_alt)
+          assert.equal(cjson.null, json.key_alt)
         end
       end)
 
@@ -572,6 +594,8 @@ describe("Admin API: #" .. strategy, function()
         assert.same(names, json.snis)
         assert.same(ssl_fixtures.cert, json.cert)
         assert.same(ssl_fixtures.key, json.key)
+        assert.equal(cjson.null, json.cert_alt)
+        assert.equal(cjson.null, json.key_alt)
 
         -- make sure the certificate got updated in DB
         res  = client:get("/certificates/" .. certificate.id)
@@ -579,6 +603,9 @@ describe("Admin API: #" .. strategy, function()
         json = cjson.decode(body)
         assert.equal(ssl_fixtures.cert, json.cert)
         assert.equal(ssl_fixtures.key, json.key)
+        assert.equal(cjson.null, json.cert_alt)
+        assert.equal(cjson.null, json.key_alt)
+
 
         -- make sure we did not add any certificate or sni
         local json = get_certificates()
